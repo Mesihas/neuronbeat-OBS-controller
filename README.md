@@ -9,7 +9,7 @@ This device uses a rotary encoder with switch as a navigator.
 
 CPU: ESP32
 Display: TFT SPI 480*320 with touchscreen
-Navegational knob Encoder and buttons
+Nav knob Encoder and buttons
 
 ### Built With
 ESP32
@@ -23,8 +23,8 @@ Arduino IDE
 - [ ] Cretate documentation
 - [ ] Improve configuration
 - [ ] Add User config for buttons and leds
-- [ ] Add UI for filters using the encoder as slider
-- [ ] Translate al comments to English
+- [ ] Add filters control to sources
+- [ ] Translate all comments to English
 
 <!-- CONTRIBUTING -->
 ## Contributing
@@ -59,19 +59,17 @@ We suggest to use
 
 ### create a setup file for the TFT_eSPI
 https://github.com/Bodmer/TFT_eSPI
-
-#define TFT_MOSI 23
-#define TFT_SCLK 18
-#define TFT_CS   17  // Chip select control pin
-#define TFT_DC    2  // Data Command control pin
-#define TFT_RST   4  // Reset pin (could connect to RST pin)
-#define TOUCH_CS 16    // Chip select pin (T_CS) of touch screen
-
+'
+  #define TFT_MOSI 23
+  #define TFT_SCLK 18
+  #define TFT_CS   17  // Chip select control pin
+  #define TFT_DC    2  // Data Command control pin
+  #define TFT_RST   4  // Reset pin (could connect to RST pin)
+  #define TOUCH_CS 16    // Chip select pin (T_CS) of touch screen
+'
 ## Circuit 
 
 TFT, Encoder, Buttons and Leds
 
-comming soon...
-
-
+![alt text](https://github.com/Mesihas/neuronbeat-OBS-controller/blob/main/NeuronBeat%20Controller%20circuit.png)
 
