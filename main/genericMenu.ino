@@ -86,7 +86,6 @@ void encoderHandlerNew(){
       itemsCount = 4;
       highlithedItemInt = highlithedPopUpMenuInt;
       who = "MenuPopUp-ROOT";  
-      Serial.println("case 3:>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
     }
 
     // switch (highlithedPopUpMenuInt)
@@ -232,15 +231,13 @@ void encoderHandlerNew(){
       return;
     }else if(encoderButLngPress && viewScenes && scenesCurrentPage == scenePageCount){
       //     logEncoderGen("Encoder ESCAPE PAGE Botton limit",  who, highlithedItemInt, itemsCount, encoderCount, encoderLastValue, true);
-        Serial.println("Encoder ESCAPE PAGE Botton limit 2 ");
+        Serial.println("Encoder ESCAPE SCENES PAGE Botton limit 2 ");
       return;
     }else if(encoderButLngPress && viewSources && sourcesCurrentPage == sourcesPageCount ){ // Escape sources page top limit
   //    logEncoderGen("Encoder SOURCES PAGE Botton limit",  who, highlithedItemInt, itemsCount, encoderCount, encoderLastValue, true);
       Serial.println("Encoder SOURCES PAGE Botton limit 3 ");
       return;
     }else if(viewSources && viewPopUp){// Escape popup left limit
-      // Serial.println("I AM PASSING JIJIJJIJIJIJJI Encoder SOURCES PopUp Menu Right limit");//,  who, highlithedItemInt, itemsCount, encoderCount, encoderLastValue, true);
-
       // return;
     }
     // NORMAL MOVE   //////////////////////////////////////////////////////////////////////
@@ -250,21 +247,21 @@ void encoderHandlerNew(){
         scenesCurrentPage++;
         highlithedItemInt = getPageFirstItemInt(0); // set cursor 1st item of the page
         highlithedSceneInt = highlithedItemInt;//need to set global as AsyncTimer does not support In lambda captured 
-        logEncoderGen("ABAJO viewScenes ",  "encoderButLngPress", highlithedItemInt, itemsCount, encoderCount, encoderLastValue, true);   
+        logEncoderGen("ENCODER DOWN viewScenes ",  "encoderButLngPress", highlithedItemInt, itemsCount, encoderCount, encoderLastValue, true);   
       }else {    
         highlithedItemInt++;
         highlithedSceneInt = highlithedItemInt;//need to set global as AsyncTimer does not support In lambda captured
         scenesCurrentPage = getCurrentDisplayPage(0);
-        logEncoderGen("ABAJO viewScenes ",  " NOT encoderButLngPress", highlithedItemInt, itemsCount, encoderCount, encoderLastValue, true); 
+        logEncoderGen("ENCODER DOWN viewScenes ",  " NOT encoderButLngPress", highlithedItemInt, itemsCount, encoderCount, encoderLastValue, true); 
       }
       // Serial.println("getSceneItemList() after 200 Millisseconds ABAJO ----->>>>>>>>>>");
       timeoutWSrequest = t.setTimeout(
       []() {       
            //   displaySceneList(currentSceneInt, highlithedSceneInt, "ENCODER ABAJO timeOutSetWSrequest");
-              getSceneItemList(scenesL[highlithedSceneInt], "ENCODER ABAJO timeout");           
+              getSceneItemList(scenesL[highlithedSceneInt], "ENCODER DOWN timeout");           
             }, 250);   
       timeOutSetWSrequest = true;  
-      displaySceneList(currentSceneInt, highlithedItemInt, "ENCODER ABAJO");   
+      displaySceneList(currentSceneInt, highlithedItemInt, "ENCODER DOWN");   
 
     }
     else if(viewSources && !viewPopUp){ //encoder mode Sources
@@ -272,25 +269,23 @@ void encoderHandlerNew(){
         sourcesCurrentPage++;
         highlithedItemInt = getPageFirstItemInt(1); // set cursor 1st item of the page
         highlithedSourceInt = highlithedItemInt;//need to set global ????
-        logEncoderGen("ABAJO viewSources ",  "encoderButLngPress", highlithedItemInt, itemsCount, encoderCount, encoderLastValue, true);   
+        logEncoderGen("ENCODER DOWN viewSources ",  "encoderButLngPress", highlithedItemInt, itemsCount, encoderCount, encoderLastValue, true);   
       }else{
         highlithedItemInt++;
         highlithedSourceInt = highlithedItemInt;
         sourcesCurrentPage = getCurrentDisplayPage(1);
       }
-      logEncoderGen("Movimiento normal Derecha",  "viewSources", highlithedItemInt, itemsCount, encoderCount, encoderLastValue, true);
-      displaySourcesList(highlithedSourceInt, false, 0, "ENCODER ABAJO");   
+      logEncoderGen("Normal movement down",  "viewSources", highlithedItemInt, itemsCount, encoderCount, encoderLastValue, true);
+      displaySourcesList(highlithedSourceInt, false, 0, "ENCODER DOWN");   
     }else if(viewSources && viewPopUp){//encoder mode Sources menu popup
 
       if(audioInputLevelMode){
         highlithedItemInt++; 
-        Serial.println("I AM PASSING case  2 ABAJO");
         listLogger();     
         setAudioInputLevelRequest(sourceItemsNames[highlithedSourceInt], getInputLevelFromEncoderMove(highlithedItemInt));
         audioInputLevel = highlithedItemInt;
       }else{
         highlithedItemInt++; 
-        Serial.println("I AM PASSING case  3 ABAJO");
         highlithedPopUpMenuInt = highlithedItemInt;
         cleanAndPrintCursor(1);
       }
@@ -327,7 +322,6 @@ void genericEncoderHandler(int menu, int menuItems){
     return;
   }
 
-
   //////%%%%%%%%%%%%%%%%%%%%%%%% SSID LIST ########################################
   if(encoderGenericLastValue < encoderCount){
     //// DOUBLE CHECK ENCODER DIRECTION ////////////////////////////////////////////////////
@@ -340,7 +334,7 @@ void genericEncoderHandler(int menu, int menuItems){
       highlithedGenericMenuint = menuItems  -1; 
       encoderGenericLastValue = highlithedGenericMenuint;
       encoder.setCount(highlithedGenericMenuint);
-      Serial.println("------------- Escapa Generic Encoder Botton limit-------------------");
+      Serial.println("------------- Escape Generic Encoder Botton limit-------------------");
       // Serial.println("menuCount Count: " + String((int32_t)menuCount));
       // Serial.println("highlithedNetMenuint: " + String((int32_t)highlithedNetMenuint));
       // Serial.println("-------------------------------------------------------");
@@ -351,7 +345,7 @@ void genericEncoderHandler(int menu, int menuItems){
     encoderGenericLastValue = encoderCount;
     highlithedGenericMenuint = highlithedGenericMenuint + 1;
     encoderLastDirection = encoderDirection;
-    cfgLogger("genericEncoderHandler", "Abajo");
+    cfgLogger("genericEncoderHandler", "DOWN");
     // Serial.println("----------------------- Movimiento SSID normal DERECHA -------------------");
     // Serial.println("highlithedNetMenuint: " + String((int32_t)highlithedNetMenuint));
     displayGenericMenu(menu, highlithedGenericMenuint);
@@ -363,7 +357,7 @@ void genericEncoderHandler(int menu, int menuItems){
   //   if(!checkEncoderDirection(encoderDirection)){return;}
     //END DOUBLE CHECK ENCODER DIRECTION ///////////////////////////////////////////////////
     if(highlithedGenericMenuint < 0) {
-      Serial.println("------------- Escapa generic Encoder Top limit -------------------");
+      Serial.println("------------- Escapes generic Encoder Top limit -------------------");
       // Serial.println("menuCount: " + String((int32_t)menuCount));
       // Serial.println("highlithedNetMenuint: " + String((int32_t)highlithedNetMenuint));
       // Serial.println("-------------------------------------------------------");
@@ -375,7 +369,7 @@ void genericEncoderHandler(int menu, int menuItems){
     encoderGenericLastValue = encoderCount;
     if(highlithedGenericMenuint != 0){ highlithedGenericMenuint = highlithedGenericMenuint - 1;}
     encoderLastDirection = encoderDirection;
-    cfgLogger("genericEncoderHandler", "Arriba");
+    cfgLogger("genericEncoderHandler", "Encoder UP");
   //  Serial.println("----------------------- Movimiento normal SSID IZQUIERDA -------------------");
   //  Serial.println("highlithedNetMenuint: " + String((int32_t)highlithedNetMenuint));
       // Ejecutar aqui el codigo correspondiente
@@ -418,22 +412,16 @@ void displayGenericMenu(int menu, int hglItem){
     current_menu_items_count = items[menu].size();
     menuNameX = menuName;   
   }
-  // tft.drawString("current_menu_items_count: ", 200, 200 );
-  // tft.drawString(String(current_menu_items_count), 200, 220);
-  // tft.drawString("menuNameX: ", 200, 240 );
-  // tft.drawString(menuNameX, 200, 260);
-  // tft.drawString("memoryUsed: ", 200, 280 );
-  // tft.drawString(String(memoryUsed), 200, 300);
-
 
   Serial.println("------------- displayGenericMenu -------------------");
-/// print titulo
+/// print title
   tft.setTextSize(2);
+  tft.setFreeFont(LABEL1_FONT);
   tft.setTextColor(TFT_BLACK);
   String menuNameAndfirmWVer = menuNameX + " - Firmware Ver. " + firmwareVersion;
   tft.drawString(menuNameAndfirmWVer, 0, 0);
 ///
-  tft.setFreeFont(LABEL1_FONT);
+
   int y = 50;
   int x = 20;
   int iniWindow = 0;

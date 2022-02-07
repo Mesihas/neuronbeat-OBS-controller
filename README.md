@@ -2,10 +2,12 @@
 WiFi remote control for OBS
 
 ### About The Project
-neuronbeat-OBS-controller: a dedicated WiFi remote control for OBS 
-One of its main features is that the user can control OBS while doing something else.
-Offers light feedback 
+neuronbeat-OBS-controller: a dedicated WiFi remote control for OBS.
+It works like Studio mode, can browse scenes and sources without affecting what OBS is showing.
+One of its main features is that the user can control OBS while doing something else as the encoder and ligths
+offers feedback to the user. 
 This device uses a rotary encoder with switch as a navigator.
+Supports 40 Scenes and 40 Sources per Scene. 
 
 CPU: ESP32
 Display: TFT SPI 480*320 with touchscreen
@@ -42,13 +44,14 @@ Don't forget to give the project a star! Thanks!
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-
-### Getting Started
+## Getting Started
 
 
 ### Installation
 
-## Prerequisites
+
+### Prerequisites
+
 
 ### ESP32 partition scheme
 This project needs SPIFFS With OTA support
@@ -57,19 +60,22 @@ We suggest to use
 * Minimal SPIFFS (1.9 MB APP with OTA/190KB SPIFFS) For more APP PROGRAM SPACE
 
 
-### create a setup file for the TFT_eSPI
+### create a setup file for the TFT_eSPI Library
 https://github.com/Bodmer/TFT_eSPI
-'
+
+`
   #define TFT_MOSI 23
   #define TFT_SCLK 18
   #define TFT_CS   17  // Chip select control pin
   #define TFT_DC    2  // Data Command control pin
   #define TFT_RST   4  // Reset pin (could connect to RST pin)
   #define TOUCH_CS 16    // Chip select pin (T_CS) of touch screen
-'
+`
+
 ## Circuit 
 
 TFT, Encoder, Buttons and Leds
 
 ![alt text](https://github.com/Mesihas/neuronbeat-OBS-controller/blob/main/NeuronBeat%20Controller%20circuit.png)
 
+<p align="right">(<a href="#top">back to top</a>)</p>

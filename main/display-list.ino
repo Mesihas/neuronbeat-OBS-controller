@@ -1,7 +1,8 @@
 void drawCursorLocoNew(int x, int y, int lastX, int lastY)
 {
   listLogger();
-
+  // This function is encharged to print the cursor for Scenes, Sources and PopMenu
+  // this function need to be refactored
   if(!viewPopUp)
   {
     int xs = 8;
@@ -55,7 +56,7 @@ void drawCursorLocoNew(int x, int y, int lastX, int lastY)
     tft.loadFont(LATO_REG_16);
     tft.setTextColor(themeColor.ink_color, themeColor.background_color);
     tft.fillRect(0,291,405,29,themeColor.background_color);
-
+    // THIS LOGS ON THE TFT THE VALUES FOR THE POPUP MENU
     // String hsci = "x: " + String(x);
     // tft.drawString(hsci, 5, 291);
     // String scp = "y: " + String(y);
@@ -134,6 +135,10 @@ void cleanAndPrintCursor(int mode){
 }
 
 int getListDisplayRow(int hsi){
+  // This function takes a highlithed item and returns the Y coordinate
+  // for whatever thing need to be printed 
+  // example: the popmenu is printed above or bellow the returned value
+
   int row;
 
   if(hsi == 0 || hsi == 10 || hsi == 20 || hsi == 30){
@@ -163,31 +168,26 @@ int getListDisplayRow(int hsi){
 void displaySceneList(int currentSceneValue, int highlithedSceneInt, String requester){
 
   int tft_windowItems = 9; // 0-9 (10)
-
- //   logEncoderAfuera("displaySceneList ",  "Before reset applied", scenesCount, -1, -1, false, requester);
-  // Captures when moving outside baunds
+  // Captures when moving outside baunds in case 
   if(highlithedSceneInt < 0){
     highlithedSceneInt = 0;
   }
   else if(highlithedSceneInt > scenesCount -1){
     highlithedSceneInt = scenesCount -1;
   }  
-  // -----------------------------------------------------
- // logEncoderAfuera("displaySceneList ",  "After reset applied", scenesCount, -1, -1, false, requester);
 
- cleanAndPrintCursor(0);
-
-    //decides if clean the area ... cuando cambia de pagina
+  cleanAndPrintCursor(0);
+  //decides if clean the area ... cuando cambia de pagina
   if(scenesCurrentPage != scenesLastCurrentPage){
     scenesLastCurrentPage = scenesCurrentPage;
     Serial.println("cleanTFTlist() >>>>>>>>>>>>>>>>>>>>>>>>");
     cleanTFTlist(0, false);
     drawScroll(0, scenesCurrentPage);
   }else{
-    if(requester == "ENCODER DOWN" || requester == "ENCODER UP"){ // si no cambio nada no re imprimo la lista en pantala
+    if(requester == "ENCODER DOWN" || requester == "ENCODER UP"){ // if nothing changed don't print the list
       return;
     }
-    if(requester == "Encoder ESCAPE Botton limit" || requester == "Encoder ESCAPE Top limit"){ // si no cambio nada no re imprimo la lista en pantala
+    if(requester == "Encoder ESCAPE Botton limit" || requester == "Encoder ESCAPE Top limit"){ // if nothing changed don't print the list
       return;
     }
   }
@@ -197,12 +197,11 @@ void displaySceneList(int currentSceneValue, int highlithedSceneInt, String requ
   int iniWindow;
   int finWindow;
   int heightIncrement = ldhi;
-
   iniWindow = setInitEndDisplayPage(0,0);
   finWindow = setInitEndDisplayPage(1,0);
 
   printPage(0);
-
+  
   sprListBold.loadFont(LATO_BLK16);
   sprListBold.createSprite(200, 14);
   sprListBold.fillSprite(TFT_WHITE); 
@@ -212,7 +211,6 @@ void displaySceneList(int currentSceneValue, int highlithedSceneInt, String requ
 
   for(int e=iniWindow; e<=finWindow; e++){
     int adjustedRow = y - 3;
-  //  bool cleanCursorArea;
     String myString = String(scenesL[e]); //  use evil Strings for this job
     String sl = myString.substring(0, 20); // take the biggining part of the scene name
     sprListRegular.fillSprite(TFT_WHITE); // clean sprite to allow new text
@@ -222,7 +220,6 @@ void displaySceneList(int currentSceneValue, int highlithedSceneInt, String requ
         sprListBold.setTextColor(themeColor.current_scene_color, themeColor.background_color); 
         sprListBold.drawString(sl, 0, 0 ); 
         sprListBold.pushSprite(x, y); // Push to TFT screen coord x, y
-      //  cleanCursorArea = true;
       } else if(e == highlithedSceneInt && e == currentSceneValue){
         sprListBold.setTextColor(themeColor.current_scene_color, themeColor.background_color);
         sprListBold.drawString(sl, 0, 0 );
@@ -235,7 +232,6 @@ void displaySceneList(int currentSceneValue, int highlithedSceneInt, String requ
         sprListRegular.setTextColor(themeColor.ink_color, themeColor.background_color);
         sprListRegular.drawString(sl, 0, 0 ); 
         sprListRegular.pushSprite(x, y);   
-      //  cleanCursorArea = true;
       }
     }
     y = y + heightIncrement;
@@ -248,6 +244,10 @@ void displaySceneList(int currentSceneValue, int highlithedSceneInt, String requ
 }
 
 void displaySourcesList(int highlithedSourceInt, bool updateOneRow, int itemIndexToUpdate, String requester){
+  // this function prints Sources list on screen.
+  // Is is a very slow process and most code is about to avoid printing if nothing changed.
+  // It will print when highlithed scene changes.
+
   if(movingEncoder && viewScenes){return;}
   if(sourcesCount == 0){cleanTFTlist(1, true); printDisplayNoItems(1); return;}
   if(viewScenes &&!updateOneRow){cleanTFTlist(1, false);} //OBS Event - Everytime highlitedItem changes Sources is wiped from screen
@@ -257,16 +257,18 @@ void displaySourcesList(int highlithedSourceInt, bool updateOneRow, int itemInde
   int x = 255;
   int iniWindow;
   int finWindow;
-  // Serial.println("leyendo array e imprimiendo..");
+
   int tft_windowItems = 9;
   int tft_winItemMinusOne = tft_windowItems -1;
-  cleanAndPrintCursor(1);    // ver donde va esta funcion [ara que highlith el primer item de la pagina]
-  //decides if clean the area ... cuando cambia de pagina
+  cleanAndPrintCursor(1);
+
+  //decides if clean the area ... when page changes
   if(sourcesCurrentPage != sourcesLastItemPage){
     sourcesLastItemPage = sourcesCurrentPage;
     cleanTFTlist(1, false);
   }else{
-    if(requester == "ENCODER DOWN" || requester == "ENCODER UP"){ // si no cambio nada no re imprimo la lista en pantala
+    // Don't draw sources because i am moving the encoder 
+    if(requester == "ENCODER DOWN" || requester == "ENCODER UP"){ // if nothing changed don't print the list
       return;
     }
   }
@@ -302,8 +304,8 @@ void displaySourcesList(int highlithedSourceInt, bool updateOneRow, int itemInde
         sprListRegular.setTextColor(themeColor.ssid_highlithed_color, themeColor.background_color);
       }
 
-      sprListRegular.drawString(sl, 0, 0 ); // Coords of middle of 100 x 50 Sprite
-      sprListRegular.pushSprite(x+26, y); // Push to TFT screen coord 10, 10
+      sprListRegular.drawString(sl, 0, 0 ); 
+      sprListRegular.pushSprite(x+26, y); 
 
       drawArrayJpeg(mg_sources_state_unvisible, sizeof(mg_sources_state_unvisible), x + 180, y);
     }else{
@@ -311,8 +313,8 @@ void displaySourcesList(int highlithedSourceInt, bool updateOneRow, int itemInde
       }else{
         sprListRegular.setTextColor(themeColor.ink_color, themeColor.background_color);
       }
-      sprListRegular.drawString(sl, 0, 0 ); // Coords of middle of 100 x 50 Sprite
-      sprListRegular.pushSprite(x+26, y); // Push to TFT screen coord 10, 10
+      sprListRegular.drawString(sl, 0, 0 ); 
+      sprListRegular.pushSprite(x+26, y); 
       drawArrayJpeg(mg_sources_state_visible, sizeof(mg_sources_state_visible), x + 180, y);
     }
     //if locked-------------------------------------------------------------------------------------------------
@@ -345,9 +347,7 @@ void printDisplayNoItems(int mode){
     {
       /* code */
     }
-    
     tft.unloadFont(); // Remove the font to recover memory used
-
 }
 
 int setInitEndDisplayPage(int window, int mode){
