@@ -1,5 +1,6 @@
 # neuronbeat-OBS-controller
 WiFi remote control for OBS
+![alt text](https://github.com/Mesihas/neuronbeat-OBS-controller/blob/main/Docs/images/NeuronBeat-OBS-Controller-popmenu.png)
 
 ### About The Project
 neuronbeat-OBS-controller: a dedicated WiFi remote control for OBS.
@@ -22,6 +23,8 @@ Arduino IDE
 ## Roadmap
 
 - [ ] Add Groups
+- [ ] Mute All
+- [ ] REC button
 - [ ] Cretate documentation
 - [ ] Improve configuration
 - [ ] Add User config for buttons and leds
@@ -44,18 +47,35 @@ Don't forget to give the project a star! Thanks!
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-## Getting Started
 
+## Prerequisites
+### OBS Websokets 5 plugin must be installed and running
 
-### Installation
+### libraries
 
-
-### Prerequisites
-
+ <vfs_api.h>
+ <FS.h>
+ <FSImpl.h>
+ <ArduinoJson.h> https://github.com/bblanchon/ArduinoJson
+ <WebSocketsClient.h> https://github.com/Links2004/arduinoWebSockets
+ <WiFi.h>
+ <FastLED.h> https://github.com/FastLED/FastLED
+ <SPI.h>
+ <TFT_eSPI.h> https://github.com/Bodmer/TFT_eSPI
+ <JPEGDecoder.h> https://github.com/Bodmer/TFT_eSPI
+ <OneButton.h> https://github.com/mathertel/OneButton
+ <ESP32Encoder.h> https://github.com/madhephaestus/ESP32Encoder
+ <WiFiClient.h>
+ <WebServer.h>
+ <ESPmDNS.h>
+ <Update.h> https://github.com/espressif/arduino-esp32/blob/master/libraries/Update/src/Update.h
+ <mbedtls/sha256.h>
+ <mbedtls/base64.h>
+ <AsyncTimer.h> https://github.com/Aasim-A/AsyncTimer
 
 ### ESP32 partition scheme
 This project needs SPIFFS With OTA support
-We suggest to use
+We suggest one of these schemes
 * Default 4MB with spiffs(1.2MB APP/1.5MB SPIFFS)
 * Minimal SPIFFS (1.9 MB APP with OTA/190KB SPIFFS) For more APP PROGRAM SPACE
 
@@ -65,10 +85,15 @@ https://github.com/Bodmer/TFT_eSPI
 
 `
   #define TFT_MOSI 23
+
   #define TFT_SCLK 18
+
   #define TFT_CS   17  // Chip select control pin
+
   #define TFT_DC    2  // Data Command control pin
+
   #define TFT_RST   4  // Reset pin (could connect to RST pin)
+
   #define TOUCH_CS 16    // Chip select pin (T_CS) of touch screen
 `
 
