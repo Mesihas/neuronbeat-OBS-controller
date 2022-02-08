@@ -1,4 +1,3 @@
-#define CREDENTIALS_FILE "/CredentialsData.txt"
 // Keypad start position, key sizes and spacing
 #define KEY_X 30 // Centre of key
 #define KEY_Y 70
@@ -7,10 +6,6 @@
 #define KEY_SPACING_X 7 // X and Y gap
 #define KEY_SPACING_Y 12
 #define KEY_TEXTSIZE 1  // Font size multiplier
-
-// Using two fonts since numbers are nice when bold
-// #define LABEL1_FONT &FreeSansOblique12pt7b // Key label font 1
-// #define LABEL2_FONT &FreeSansBold12pt7b    // Key label font 2
 
 // Numeric display box size and location
 #define DISP_X 1
@@ -85,10 +80,10 @@ void keyboardHandler() {
   if(!keyboardActive){return;}
   Serial.println(" keyboardHandler(); :keyboardActive  TRUE");
   uint16_t t_x = 0, t_y = 0; // To store the touch coordinates
-
+  bool isPassword = false;
   // Pressed will be set true is there is a valid touch on the screen
   boolean pressed = tft.getTouch(&t_x, &t_y);
-
+  //###### This handles the menu on the boton of the keyboard ##########################################
   // / Check if any key coordinate boxes contain the touch coordinates FOR MAIN BUTTONS
   for (uint8_t b = 0; b < 7; b++) {
     if (pressed && key_main[b].contains(t_x, t_y)) {
@@ -101,7 +96,7 @@ void keyboardHandler() {
       key_main[b].press(false);  // tell the button it is NOT pressed
     }
   }
-  cfgLogger("keyboardHandler()", "Paso 1");
+  cfgLogger("keyboardHandler()", "Step 1");
 // Check if any key has changed state
   for (uint8_t b = 0; b < 7; b++) {
 
@@ -120,7 +115,6 @@ void keyboardHandler() {
           numberIndex++;
           numberBuffer[numberIndex] = 0; // zero terminate
         }
-        status(""); // Clear the old status
       }
 
       // Del button, so delete last char
@@ -130,25 +124,21 @@ void keyboardHandler() {
           numberIndex--;
           numberBuffer[numberIndex] = 0;//' ';
         }
-        status(""); // Clear the old status
       }
 
       // Mumeric keypad button
       if (b == 2) {
         drawKeypad(1);
-        status(""); // Clear the old status
       }
 
       // Uppercase keypad button
       if (b == 3) {
         drawKeypad(2);
-        status(""); // Clear the old status
       }
 
       // Lowercase keypad button
       if (b == 4) {
         drawKeypad(3);
-        status(""); // Clear the old status
       }
 
      //exit button
@@ -156,7 +146,6 @@ void keyboardHandler() {
         // switch (keyboardCallback)
         // {
         //   case 1:  //press Network name
-            status(""); // Clear the old status
             keyboardCallback = 0;
             currentConfigStep = 4;
             tft.fillScreen(themeColor.background_color);
@@ -177,7 +166,6 @@ void keyboardHandler() {
                     numberBuffer,  // <- source
                     sizeof(config.password));
             //createGUInetworkConfig();
-            status(""); // Clear the old status
             currentConfigStep = 4;
             tft.fillScreen(themeColor.background_color);
             saveWiFiCredentials();
@@ -191,7 +179,6 @@ void keyboardHandler() {
                     numberBuffer,  // <- source
                     sizeof(config.websockets_server_host));
             //createGUInetworkConfig();
-            status(""); // Clear the old status
             currentConfigStep = 4;
             tft.fillScreen(themeColor.background_color);
             saveWiFiCredentials();
@@ -205,7 +192,6 @@ void keyboardHandler() {
                     numberBuffer,  // <- source
                     sizeof(config.wsp));
 
-            status(""); // Clear the old status
             updatedWSP =  true;
             currentConfigStep = 4;
             tft.fillScreen(themeColor.background_color);
@@ -219,8 +205,6 @@ void keyboardHandler() {
             strlcpy(config.websockets_password,                  // <- destination
                     numberBuffer,  // <- source
                     sizeof(config.websockets_password));
-            //createGUInetworkConfig();
-            status(""); // Clear the old status
             currentConfigStep = 4;
             tft.fillScreen(themeColor.background_color);
             saveWiFiCredentials();
@@ -240,8 +224,23 @@ void keyboardHandler() {
       tft.setFreeFont(&FreeSansOblique12pt7b);  // Choose a nicefont that fits box
       tft.setTextColor(DISP_TCOLOR);     // Set the font colour
 
-      // Draw the string, the value returned is the width in pixels
-      int xwidth = tft.drawString(numberBuffer, DISP_X + 4, DISP_Y + 12);
+      // check if password field
+      int i;
+      String passwordHideStarts;
+      String pass = numberBuffer;
+      int xwidth;
+      if(keyboardCallback == 1 || keyboardCallback == 4){
+        for (i = 0; i <  pass.length(); ++i)
+        {
+          passwordHideStarts = passwordHideStarts + "*";
+        }
+        // Draw the string, the value returned is the width in pixels
+        xwidth = tft.drawString(passwordHideStarts, DISP_X + 4, DISP_Y + 12);
+      }else{
+        // Draw the string, the value returned is the width in pixels
+        xwidth = tft.drawString(numberBuffer, DISP_X + 4, DISP_Y + 12);
+      }
+
 
       // Now cover up the rest of the line up by drawing a black rectangle.  No flicker this way
       // but it will not work with italic or oblique fonts due to character overlap.
@@ -249,10 +248,8 @@ void keyboardHandler() {
     }
   }
 
-  cfgLogger("keyboardHandler()", "Paso 2");
-  //##############################################################################################################
-
-  // Character keyboards///////////////
+  cfgLogger("keyboardHandler()", "Step 2");
+  //###### This handles the keyboard itself #############################################################
   // / Check if any key coordinate boxes contain the touch coordinates
   int keybSetlen = 30;
   if(currentKeyboardSet == 3) {keybSetlen = 40;}
@@ -269,7 +266,7 @@ void keyboardHandler() {
     }
   }
 
-  cfgLogger("keyboardHandler()", "Paso 3");
+  cfgLogger("keyboardHandler()", "Step 3");
   // Check if any key has changed state
   for (uint8_t b = 0; b < keybSetlen; b++) {
 
@@ -310,9 +307,8 @@ void keyboardHandler() {
           numberIndex++;
           numberBuffer[numberIndex] = 0; // zero terminate
         }
-        status(""); // Clear the old status
       }
-
+      // Special keys
       // Del button, so delete last char
       // if (b == 1) {
       //   numberBuffer[numberIndex] = 0;
@@ -320,22 +316,18 @@ void keyboardHandler() {
       //     numberIndex--;
       //     numberBuffer[numberIndex] = 0;//' ';
       //   }
-      //   status(""); // Clear the old status
       // }
 
       // if (b == 2) {
-      //   status("Sent value to serial port");
+
       //   Serial.println(numberBuffer);
       // }
       // // we dont really check that the text field makes sense
       // // just try to call
 
       // if (b == 0) {
-      //  // status("Value cleared");
       //  // numberIndex = 0; // Reset index to 0
       // //  numberBuffer[numberIndex] = 0; // Place null in buffer
-      //  Serial.println("DALE PUTA ");
-
       // }
 
       // Update the number display field
@@ -344,8 +336,26 @@ void keyboardHandler() {
       tft.setTextColor(DISP_TCOLOR);     // Set the font colour
 
       // Draw the string, the value returned is the width in pixels
-      int xwidth = tft.drawString(numberBuffer, DISP_X + 4, DISP_Y + 12);
+    //  int xwidth = tft.drawString(numberBuffer, DISP_X + 4, DISP_Y + 12);
+      // hide the password character
+   // check if password field
+      int i;
+      String passwordHideStarts;
+      String pass = numberBuffer;
+      int xwidth;
+      if(keyboardCallback == 1 || keyboardCallback == 4){
+        for (i = 0; i <  pass.length(); ++i)
+        {
+          passwordHideStarts = passwordHideStarts + "*";
+        }
+        // Draw the string, the value returned is the width in pixels
+        xwidth = tft.drawString(passwordHideStarts, DISP_X + 4, DISP_Y + 12);
+      }else{
+        // Draw the string, the value returned is the width in pixels
+        xwidth = tft.drawString(numberBuffer, DISP_X + 4, DISP_Y + 12);
+      }
 
+    //  int xwidth = tft.drawString(passwordHideStarts, DISP_X + 4, DISP_Y + 12);
       // Now cover up the rest of the line up by drawing a black rectangle.  No flicker this way
       // but it will not work with italic or oblique fonts due to character overlap.
       tft.fillRect(DISP_X + 4 + xwidth, DISP_Y + 1, DISP_W - xwidth - 5, DISP_H - 2, TFT_BLACK);
@@ -353,7 +363,7 @@ void keyboardHandler() {
       delay(10); // UI debouncing
     }
   }
-    cfgLogger("keyboardHandler()", "Paso final");
+    cfgLogger("keyboardHandler()", "final step");
 }
 
 //------------------------------------------------------------------------------------------
@@ -377,27 +387,24 @@ void drawKeypad(int k)
       case 1:     
         key[b].initButton(&tft, KEY_X + col * (KEY_W + KEY_SPACING_X),
                           KEY_Y + row * (KEY_H + KEY_SPACING_Y), // x, y, w, h, outline, fill, text
-                          KEY_W, KEY_H, TFT_WHITE, TFT_BLUE   , TFT_WHITE,
+                          KEY_W, KEY_H, TFT_WHITE, TFT_BLUE, TFT_WHITE,
                           keyLabelNumbers[b], KEY_TEXTSIZE);  
         break;
       case 2:
         key[b].initButton(&tft, KEY_X + col * (KEY_W + KEY_SPACING_X),
                           KEY_Y + row * (KEY_H + KEY_SPACING_Y), // x, y, w, h, outline, fill, text
-                          KEY_W, KEY_H, TFT_WHITE, TFT_BLUE   , TFT_WHITE,
+                          KEY_W, KEY_H, TFT_WHITE, TFT_BLUE, TFT_WHITE,
                           keyLabelUpperCase[b], KEY_TEXTSIZE);
         break;
       case 3:
         key[b].initButton(&tft, KEY_X + col * (KEY_W + KEY_SPACING_X),
                           KEY_Y + row * (KEY_H + KEY_SPACING_Y), // x, y, w, h, outline, fill, text
-                          KEY_W, KEY_H, TFT_WHITE, TFT_BLUE   , TFT_WHITE,
+                          KEY_W, KEY_H, TFT_WHITE, TFT_BLUE, TFT_WHITE,
                           keyLabelLowerCase[b], KEY_TEXTSIZE);
         break;
       default:
         break;
       }
-
-      // Serial.println("Value B: ");
-      // Serial.println(b);
       key[b].drawButton();
       b = b + 1;
       if(k != 3 && b > 30) return;
@@ -407,7 +414,6 @@ void drawKeypad(int k)
 
 void drawMainLabel(){
   //coord de bottons for touch
-  //
     // Draw the keys
     for (uint8_t col = 0; col < 7; col++) {
       // x, y, w, h, outline, fill, text
@@ -419,21 +425,6 @@ void drawMainLabel(){
       TFT_WHITE, keyColorNumbers[col], TFT_WHITE,
       key_mainButtonsLabel[col], 
       KEY_TEXTSIZE);
-
       key_main[col].drawButton();
     }
 }
-
-//------------------------------------------------------------------------------------------
-// Print something in the mini status bar
-void status(const char *msg) {
-  // tft.setTextPadding(240);
-  // //tft.setCursor(STATUS_X, STATUS_Y);
-  // tft.setTextColor(TFT_WHITE, TFT_DARKGREY);
-  // tft.setTextFont(0);
-  // tft.setTextDatum(TC_DATUM);
-  // tft.setTextSize(1);
-  // tft.drawString(msg, STATUS_X, STATUS_Y);
-}
-
-//------------------------------------------------------------------------------------------

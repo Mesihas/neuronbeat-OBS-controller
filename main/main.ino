@@ -318,6 +318,8 @@ unsigned short timeoutWSrequest;
 unsigned short timeoutEncoderButtonLngPressStart; //Please rename -  used to change state "on release" button encoder
 unsigned short timeoutMovingEncoderTrue; // used to control GetSceneItemList Async task (asyncTimer)
 unsigned short clickEncoderButtonTask; // used to control GetSceneItemList Async task (asyncTimer)
+unsigned short passwordWatchTimeout; // used to hide the password 
+
 bool timeOutSetWSrequest = false;
 //bool timeOutSetGetSceneItemList = false;
 

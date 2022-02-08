@@ -415,7 +415,7 @@ void displayGenericMenu(int menu, int hglItem){
 
   Serial.println("------------- displayGenericMenu -------------------");
 /// print title
-  tft.setTextSize(2);
+  tft.setTextSize(1);
   tft.setFreeFont(LABEL1_FONT);
   tft.setTextColor(TFT_BLACK);
   String menuNameAndfirmWVer = menuNameX + " - Firmware Ver. " + firmwareVersion;

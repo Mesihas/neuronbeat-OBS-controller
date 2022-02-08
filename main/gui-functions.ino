@@ -57,6 +57,7 @@ void cleanTFTlist(int mode, bool noSources){
 void cleanSourcesCursorDisplayArea(){
   tft.fillRect(242, 38, 17, 240, themeColor.background_color);
 }
+
 //########### CHECK TOUCH   ###################################################################
 void checkTouch(){
   uint16_t t_x = 0, t_y = 0; // To store the touch coordinates
@@ -254,9 +255,7 @@ void ledWifiConnecting(){
     leds[1] = CRGB::Red;  
     leds[2] = CRGB::Red;        
     FastLED.show();
-
 }
-
 
 void ledStreaming(){
 
@@ -279,14 +278,23 @@ void printAllNetCfgValuesToTFT(){
 void printSelectedSSIDtoTFT(){
   tft.setTextSize(1);
   tft.setTextColor(themeColor.ink_color, themeColor.background_color);
-  tft.drawString(config.ssid, 200, 50);
+  tft.drawString(config.ssid, 250, 50);
   Serial.println("printSelectedSSIDtoTFT");
 }
 
 void printSelectedPassToTFT(){
   tft.setTextSize(1);
   tft.setTextColor(themeColor.ink_color, themeColor.background_color);
-  tft.drawString(config.password, 200, 80);
+ // tft.drawString(config.password, 200, 80);
+  int i;
+  String passwordHideStarts;
+  String pass = config.password;
+
+  for (i = 0; i <  pass.length(); ++i)
+  {
+    passwordHideStarts = passwordHideStarts + "*";
+  }
+  tft.drawString(passwordHideStarts, 250, 80);
   Serial.println("printSelectedPassToTFT");
   keyboardActive = false;
 }
@@ -294,7 +302,7 @@ void printSelectedPassToTFT(){
 void printSelectedHostToTFT(){
   tft.setTextSize(1);
   tft.setTextColor(themeColor.ink_color, themeColor.background_color);
-  tft.drawString(config.websockets_server_host, 200, 110);
+  tft.drawString(config.websockets_server_host, 250, 110);
   Serial.println("void printSelectedHostToTFT");
   keyboardActive = false;
 }
@@ -303,11 +311,11 @@ void printSelectedWspToTFT(){
   tft.setTextSize(1);
   tft.setTextColor(themeColor.ink_color, themeColor.background_color);
   if(config.wsp[0] == 0){
-    tft.drawString(String(config.websockets_server_port), 200, 140);
+    tft.drawString(String(config.websockets_server_port), 250, 140);
     Serial.println("config.websockets_server_port in file = 0");
 
   }else{ 
-    tft.drawString(config.wsp, 200, 140);
+    tft.drawString(config.wsp, 250, 140);
     Serial.print("config.wsp in file value");
   }
   keyboardActive = false;  
@@ -316,7 +324,17 @@ void printSelectedWspToTFT(){
 void printSelectedWsPassToTFT(){
   tft.setTextSize(1);
   tft.setTextColor(themeColor.ink_color, themeColor.background_color);
-  tft.drawString(config.websockets_password, 200, 170);
+ // tft.drawString(config.websockets_password, 200, 170);
+  int i;
+  String passwordHideStarts;
+  String pass = config.websockets_password;
+
+  for (i = 0; i <  pass.length(); ++i)
+  {
+    passwordHideStarts = passwordHideStarts + "*";
+  }
+  tft.drawString(passwordHideStarts, 250, 170);
+
   Serial.println("printSelectedWsPassToTFT");
   keyboardActive = false;
 }

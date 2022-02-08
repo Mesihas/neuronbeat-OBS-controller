@@ -279,13 +279,13 @@ bool readWiFiCredentials()
     Serial.println("SSID:");
     Serial.println(config.ssid);
     Serial.println("Password:");
-    Serial.println(config.password);
+    Serial.println("**********************");
     Serial.println("Websockets_server_host:");
     Serial.println(config.websockets_server_host);
     Serial.println("Websockets_server_Port:");
     Serial.println(config.websockets_server_port);
     Serial.println("Websockets_Password:");
-    Serial.println(config.websockets_password);
+    Serial.println("**********************");
     Serial.println("-----------------------------------------------------");
      
   }else{
