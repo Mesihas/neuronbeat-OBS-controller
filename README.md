@@ -2,22 +2,23 @@
 WiFi remote control for OBS
 ![alt text](https://github.com/Mesihas/neuronbeat-OBS-controller/blob/main/Docs/images/NeuronBeat-OBS-Controller-popmenu.png)
 
-### About The Project
+## About The Project
 neuronbeat-OBS-controller: a dedicated WiFi remote control for OBS.   
 It works like Studio mode, can browse scenes and sources without affecting what OBS is showing.
 One of its main features is that the user can control OBS while doing something else as the encoder and ligths
 offers feedback to the user.    
 This device uses a rotary encoder with switch as a navigator.   
 Supports 40 Scenes and 40 Sources per Scene. 
+[![Short Demo](https://img.youtube.com/vi/gIc_GHmdLuY/0.jpg)](https://www.youtube.com/watch?v=gIc_GHmdLuY)
 
-### Hardware
 
+## Hardware
 CPU: ESP32   
 Display: TFT SPI 480*320 with touchscreen   
 Nav knob Encoder with switch and 3 buttons   
 3 Neopixel leds   
 
-### Software
+## Software
 C++   
 Arduino IDE   
 
