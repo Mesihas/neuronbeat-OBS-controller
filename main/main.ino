@@ -511,7 +511,7 @@ void setup() {
   resetArrayEncoderMotion();
 
   printMainGUI(false);
-//  getSceneList();
+  //  getSceneList();
   Serial.print("FIN SETUP--------------- : "); 
   Serial.println(ESP.getFreeHeap());
 
@@ -528,6 +528,12 @@ void setup() {
   input_kinds[10] = "color_source_v3";
   input_kinds[11] = "group";
   input_kinds[12] = "game_capture";
+  input_kinds[13] = "av_capture_input";
+  input_kinds[14] = "coreaudio_input_capture"; 
+  input_kinds[15] = "coreaudio_output_capture";
+  input_kinds[16] = "display_capture";
+  input_kinds[17] = "ndi_source"; // no icon yet
+
 // Blackmagic Device
 // Intel® RealSense™ 3D Camera GreenScreen
 // Media Source

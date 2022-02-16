@@ -4,18 +4,19 @@ WiFi remote control for OBS
 
 ## About The Project
 neuronbeat-OBS-controller: a dedicated WiFi remote control for OBS.   
-It works like Studio mode, can browse scenes and sources without affecting what OBS is showing.
-One of its main features is that the user can control OBS while doing something else as the encoder and ligths
-offers feedback to the user.    
+Works like OBS studio mode, can browse scenes and sources without affecting the current program scene or what OBS is displaying.
+Main feature: users can control OBS while doing something else as the nav system (encoder and ligths)
+offers feedback to the user .    
 This device uses a rotary encoder with switch as a navigator.   
-Supports 40 Scenes and 40 Sources per Scene. 
-[![Short Demo](https://img.youtube.com/vi/gIc_GHmdLuY/0.jpg)](https://www.youtube.com/watch?v=gIc_GHmdLuY)
+Supports 40 Scenes (4 pages) and 40 Sources per Scene (4 pages)   
 
+[![Short Demo](https://img.youtube.com/vi/gIc_GHmdLuY/0.jpg)](https://www.youtube.com/watch?v=gIc_GHmdLuY)   
 
 ## Hardware
 CPU: ESP32   
 Display: TFT SPI 480*320 with touchscreen   
-Nav knob Encoder with switch and 3 buttons   
+Nav knob Encoder with switch
+3 assignable buttons   
 3 Neopixel leds   
 
 ## Software
@@ -71,8 +72,7 @@ We suggest one of these schemes
 
 
 ### create a setup file for the TFT_eSPI Library
-https://github.com/Bodmer/TFT_eSPI
-
+https://github.com/Bodmer/TFT_eSPI   
 
 #define TFT_MOSI 23   
 

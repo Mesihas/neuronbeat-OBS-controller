@@ -601,6 +601,9 @@ void set_Input_kind_ima(int input_kind, int x, int y){
   y = y - 3;
   switch (input_kind)
   {
+  case -1:
+      Serial.print("Display unknown input_kind icon"); 
+    break;
   case 0:
     drawArrayJpeg(slideshow, sizeof(slideshow), x , y);
     break;
@@ -639,7 +642,23 @@ void set_Input_kind_ima(int input_kind, int x, int y){
     break;
   case 12:
     drawArrayJpeg(gamePad, sizeof(gamePad), x , y);
-    break;                          
+    break;  
+  case 13:
+    drawArrayJpeg(wasapi_input_capture, sizeof(wasapi_input_capture), x , y);
+    break; 
+  case 14:
+    drawArrayJpeg(wasapi_input_capture, sizeof(wasapi_input_capture), x , y);
+    break; 
+  case 15:
+    drawArrayJpeg(wasapi_output_capture, sizeof(wasapi_output_capture), x , y);
+    break; 
+  case 16:
+    drawArrayJpeg(monitor_capture, sizeof(monitor_capture), x , y);
+    break; 
+  case 17:
+    drawArrayJpeg(monitor_capture, sizeof(monitor_capture), x , y);
+    break; 
+    
   default:
     break;
   }

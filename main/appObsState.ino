@@ -326,7 +326,7 @@ int getSourceInputKind(const char* input_kind, bool isGroup){
   if (input_kind == nullptr && !isGroup){
     return -1;
   }else{
-    for (int i = 0; i < 20; i++)
+    for (int i = 0; i < 17; i++)
     {
         if (strcmp(input_kind, input_kinds[i]) == 0)
         {
@@ -334,6 +334,8 @@ int getSourceInputKind(const char* input_kind, bool isGroup){
         }
     }
   }
+  Serial.println("-------getSourceInputKind() return 0 -----------------------------------");
+  return -1;
 }
 
 double getInputLevelFromEncoderMove(int level){
